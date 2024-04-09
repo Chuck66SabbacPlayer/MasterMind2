@@ -43,6 +43,16 @@ public class ReglageActivity extends AppCompatActivity implements SeekBar.OnSeek
 
         backButton = findViewById(R.id.backReglageButton);
 
+        //initialise la valeur des bar et des textView
+        lengthBar.setProgress(Parametre.LENGTH - 2);
+        lengthView.setText(Parametre.LENGTH+"");
+
+        colorBar.setProgress(Parametre.COLOR - 2);
+        colorView.setText(Parametre.COLOR+"");
+
+        triesBar.setProgress(Parametre.TRIES - 8);
+        triesView.setText(Parametre.TRIES+"");
+
         //set le listener pour les seekBar
         lengthBar.setOnSeekBarChangeListener(this);
         colorBar.setOnSeekBarChangeListener(this);
@@ -71,11 +81,9 @@ public class ReglageActivity extends AppCompatActivity implements SeekBar.OnSeek
     @Override
     public void onClick(View v) {
         Intent backIntent = new Intent();
-        //place les parametres a retourner
-        backIntent.putExtra("length", lengthBar.getProgress()+2);
-        backIntent.putExtra("color", colorBar.getProgress()+2);
-        backIntent.putExtra("tries", triesBar.getProgress()+8);
-        setResult(RESULT_OK, backIntent);
+        Parametre.LENGTH = lengthBar.getProgress()+2;
+        Parametre.COLOR = colorBar.getProgress()+2;
+        Parametre.TRIES = triesBar.getProgress()+8;
         finish();
     }
 
