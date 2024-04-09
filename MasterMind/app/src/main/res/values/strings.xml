@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">MasterMind</string>
+
+    <string name="min_value_length">2</string>
+    <string name="max_value_length">6</string>
+    <string name="default_value_length">4</string>
+    <string name="title_length">Longueur du code: </string>
+
+    <string name="min_value_color">2</string>
+    <string name="max_value_color">8</string>
+    <string name="default_value_color">8</string>
+    <string name="title_color">Nombre de couleurs:</string>
+
+    <string name="min_value_tries">8</string>
+    <string name="max_value_tries">12</string>
+    <string name="default_value_tries">10</string>
+    <string name="title_tries">Nombre de tentatives</string>
+
+    <string name="back_label">RETOUR</string>
+
 </resources>
