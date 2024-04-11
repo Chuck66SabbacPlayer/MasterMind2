@@ -1,6 +1,5 @@
 package com.example.mastermind;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -47,8 +46,8 @@ public class ReglageActivity extends AppCompatActivity implements SeekBar.OnSeek
         lengthBar.setProgress(Parametre.LENGTH - 2);
         lengthView.setText(Parametre.LENGTH+"");
 
-        colorBar.setProgress(Parametre.COLOR - 2);
-        colorView.setText(Parametre.COLOR+"");
+        colorBar.setProgress(Parametre.COLOR_COUNT - 2);
+        colorView.setText(Parametre.COLOR_COUNT +"");
 
         triesBar.setProgress(Parametre.TRIES - 8);
         triesView.setText(Parametre.TRIES+"");
@@ -82,7 +81,7 @@ public class ReglageActivity extends AppCompatActivity implements SeekBar.OnSeek
     public void onClick(View v) {
         Intent backIntent = new Intent();
         Parametre.LENGTH = lengthBar.getProgress()+2;
-        Parametre.COLOR = colorBar.getProgress()+2;
+        Parametre.COLOR_COUNT = colorBar.getProgress()+2;
         Parametre.TRIES = triesBar.getProgress()+8;
         finish();
     }
