@@ -1,24 +1,42 @@
 package com.example.mastermind;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private Button btnJouer;
+    private Button btnConfig;
+    private Button btnHistorique;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        btnJouer = findViewById(R.id.btnJouer);
+        btnConfig = findViewById(R.id.btnConfig);
+        btnHistorique = findViewById(R.id.btnHistorique);
+
+        btnJouer.setOnClickListener(this);
+
+        btnConfig.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.btnJouer) {
+            Intent intent = new Intent(MainActivity.this, JeuActivity.class);
+            startActivity(intent);
+        }
+        else if(v.getId() == R.id.btnConfig) {
+            Intent intent = new Intent(MainActivity.this, ReglageActivity.class);
+            startActivity(intent);
+        }
     }
 }
