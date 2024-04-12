@@ -1,19 +1,10 @@
 package com.example.mastermind;
 
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.media.Image;
 import android.os.Bundle;
 
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.gridlayout.widget.GridLayout;
 
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -50,8 +41,8 @@ public class JeuActivity extends AppCompatActivity implements View.OnClickListen
         backButton = findViewById(R.id.backGameButton);
         backButton.setOnClickListener(this);
 
-        setUpPalette();
         setUpGrid();
+        setUpPalette();
 
 
 
@@ -72,19 +63,19 @@ public class JeuActivity extends AppCompatActivity implements View.OnClickListen
         //plusieurs lignes du code sont non necessaire
         for(int i = 0; i < Parametre.COLOR_COUNT; i++) {
             ImageView image = new ImageView(this);
-            image.setBackground(getDrawable(R.drawable.rounded_square));
-            GradientDrawable drawable = (GradientDrawable) image.getBackground();
+            image.setImageDrawable(getDrawable(R.drawable.rounded_square));
+            //GradientDrawable drawable = (GradientDrawable) image.getBackground();
 
-            drawable.setColor(getColor(Parametre.colors[i]));
+            //drawable.setColor(getColor(Parametre.colors[i]));
             //image.setBackgroundColor(Parametre.colors[i]);
 
+            image.setBackgroundColor(getColor(Parametre.colors[i]));
             GridLayout.LayoutParams param = new GridLayout.LayoutParams();
             param.rightMargin = 20;
             param.width = 225;
             param.height = 225;
             image.setLayoutParams(param);
             palette.addView(image);
-            image.setBackgroundColor(getColor(Parametre.colors[i]));
 
             image.setTag(i);
             image.setOnClickListener(this);
@@ -106,7 +97,7 @@ public class JeuActivity extends AppCompatActivity implements View.OnClickListen
     private void addRow() {
         for(int i = 0; i < Parametre.LENGTH; i++) {
             ImageView image = new ImageView(this);
-            image.setImageDrawable(getDrawable(R.drawable.rounded_square));
+            image.setImageDrawable(getDrawable(R.drawable.circle));
             GridLayout.LayoutParams param = new GridLayout.LayoutParams();
             param.rightMargin = 20;
             param.width = 125;
