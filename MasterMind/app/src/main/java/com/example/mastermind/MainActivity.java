@@ -2,10 +2,15 @@ package com.example.mastermind;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.mastermind.modele.dao.Dao;
+import com.example.mastermind.modele.dao.JsonService;
+import com.example.mastermind.modele.entite.Solution;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -15,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -25,6 +31,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnJouer.setOnClickListener(this);
 
         btnConfig.setOnClickListener(this);
+
+        //import avant tout pour eviter des null errors
+        new JsonService().getAll();
+        new JsonService().getColors();
+
+
+
+
 
     }
 

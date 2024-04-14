@@ -1,5 +1,6 @@
 package com.example.mastermind;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.gridlayout.widget.GridLayout;
@@ -8,17 +9,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.mastermind.modele.dao.Dao;
+import com.example.mastermind.modele.entite.Feedback;
+import com.example.mastermind.presenteur.Partie;
 
 public class JeuActivity extends AppCompatActivity implements View.OnClickListener {
 
     GridLayout grid;
     GridLayout palette;
-    private int selectedIndex;
-    private int tries = 0;
 
+    private Partie partie;
     //button
     Button confirmButton;
     Button backButton;
@@ -30,6 +35,10 @@ public class JeuActivity extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_jeu);
+
+        Dao.getInstance().getAll();
+        Dao.getInstance().getColor();
+        partie = new Partie();
 
         //recupere les views et les mettre dans leurs variables correspondante
         grid = findViewById(R.id.gameGrid);
@@ -44,9 +53,14 @@ public class JeuActivity extends AppCompatActivity implements View.OnClickListen
         setUpGrid();
         setUpPalette();
 
-
-
-
+        //cache l'heure en haut de l'ecran et le navigation UI en bas de l'ecran
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+        for(int i = 0; i < partie.getSolution().getCode().length; i++) {
+            Log.d("solution: ", partie.getSolution().getColor(i));
+        }
     }
 
     private void setUpPalette() {
@@ -58,34 +72,27 @@ public class JeuActivity extends AppCompatActivity implements View.OnClickListen
             palette.setColumnCount(4);
             palette.setRowCount(2);
         }
-        //does not work as wanted
-        //TODO: clean up code
-        //plusieurs lignes du code sont non necessaire
+
         for(int i = 0; i < Parametre.COLOR_COUNT; i++) {
             ImageView image = new ImageView(this);
             image.setImageDrawable(getDrawable(R.drawable.rounded_square));
-            //GradientDrawable drawable = (GradientDrawable) image.getBackground();
-
-            //drawable.setColor(getColor(Parametre.colors[i]));
-            //image.setBackgroundColor(Parametre.colors[i]);
-
-            image.setBackgroundColor(getColor(Parametre.colors[i]));
+            Log.d("colors", partie.getColor(i));
+            image.setBackgroundColor(Color.parseColor("#"+partie.getColor(i)));
             GridLayout.LayoutParams param = new GridLayout.LayoutParams();
             param.rightMargin = 20;
-            param.width = 225;
-            param.height = 225;
+            param.width = 175;
+            param.height = 175;
             image.setLayoutParams(param);
             palette.addView(image);
 
             image.setTag(i);
             image.setOnClickListener(this);
-
         }
     }
 
     private void setUpGrid() {
         //regle bien les grid selon les parametre choisi
-        grid.setColumnCount(Parametre.LENGTH);
+        grid.setColumnCount(Parametre.LENGTH + 2);
         grid.setRowCount(Parametre.TRIES);
         addRow();
 
@@ -95,6 +102,10 @@ public class JeuActivity extends AppCompatActivity implements View.OnClickListen
      * rajoute le prochain try
      */
     private void addRow() {
+        TextView info1 = new TextView(this);
+        TextView info2 = new TextView(this);
+        grid.addView(info1);
+
         for(int i = 0; i < Parametre.LENGTH; i++) {
             ImageView image = new ImageView(this);
             image.setImageDrawable(getDrawable(R.drawable.circle));
@@ -103,15 +114,25 @@ public class JeuActivity extends AppCompatActivity implements View.OnClickListen
             param.width = 125;
             param.height = 125;
             image.setLayoutParams(param);
-            image.setBackgroundColor(getColor(R.color.gray));
-            image.setTag("c"+(i+tries*Parametre.LENGTH));
+            image.setBackgroundColor(Color.parseColor(partie.getCurrentTry().getColor(i)));
+            image.setTag("c"+(i+partie.getTry()*Parametre.LENGTH));
             image.setOnClickListener(this);
             grid.addView(image);
 
         }
-        selectedIndex = 0;
+        grid.addView(info2);
+        partie.setSelected(1);
     }
 
+    public void updateInfo(View v) {
+        Feedback feedback = partie.checkCode();
+        TextView info1 = (TextView) grid.getChildAt(partie.getTry() * (Parametre.LENGTH + 2));
+        Log.d("info1", info1.toString());
+        TextView info2 = (TextView) grid.getChildAt(partie.getTry() * (Parametre.LENGTH + 2) + Parametre.LENGTH + 1);
+        Log.d("info2", info2.toString());
+        info1.setText(""+feedback.getValidPostion());
+        info2.setText(""+feedback.getWrongPosition());
+    }
 
     @Override
     public void onClick(View v) {
@@ -126,21 +147,23 @@ public class JeuActivity extends AppCompatActivity implements View.OnClickListen
             //a implementer
         }
         else if(v.getId() == R.id.confirmButton) {
-            tries++;
+            updateInfo(v);
+            partie.incrementTry();
             addRow();
         }
         else {
             if(v.getTag().toString().contains("c")) {
-                int tmpIndex = Integer.parseInt(((String) v.getTag()).substring(1));
+                int tmpIndex = 1 + Integer.parseInt(((String) v.getTag()).substring(1));
                 Log.d("click", "tmpIndex: "+tmpIndex);
-                if(tmpIndex >= tries*Parametre.LENGTH)
-                    selectedIndex = tmpIndex - tries*Parametre.LENGTH;
+                if(tmpIndex >= partie.getTry()*Parametre.LENGTH)
+                    partie.setSelected(tmpIndex - partie.getTry()*Parametre.LENGTH);
             }
             else {
-                Log.d("click", "selectedIndex: "+selectedIndex);
-                grid.getChildAt(tries * Parametre.LENGTH + selectedIndex).setBackgroundColor(getColor(Parametre.colors[(int) v.getTag()]));
-                if (selectedIndex < Parametre.LENGTH - 1) {
-                    selectedIndex++;
+                Log.d("click", "selectedIndex: "+partie.getSelected());
+                grid.getChildAt(partie.getTry() * (Parametre.LENGTH +2) + partie.getSelected()).setBackgroundColor(Color.parseColor("#"+partie.getColor(((int) v.getTag()))));
+                partie.changeColor(partie.getSelected()-1, partie.getColor((int) v.getTag()));
+                if (partie.getSelected() < Parametre.LENGTH) {
+                    partie.setSelected(partie.getSelected()+1);
                 }
             }
         }

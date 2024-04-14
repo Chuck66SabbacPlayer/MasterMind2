@@ -7,7 +7,7 @@
             android:useLevel="false"
             android:thickness="1000dp">
             <solid
-                android:color="@color/white"
+                android:color="@color/design_default_color_background"
                 />
 
         </shape>
@@ -25,7 +25,7 @@
             <solid />
             <stroke
                 android:color="@color/black"
-                android:width="2dp"
+                android:width="3dp"
                 />
 
             <corners
@@ -44,7 +44,7 @@
 
                 />
             <stroke
-                android:color="@color/white"
+                android:color="@color/design_default_color_background"
                 android:width="1dp" />
 
             <corners
