@@ -103,14 +103,19 @@ public class JeuActivity extends AppCompatActivity implements View.OnClickListen
      */
     private void addRow() {
         TextView info1 = new TextView(this);
+        info1.setTextSize(25);
+        info1.setTextColor(Color.GREEN);
         TextView info2 = new TextView(this);
+        info2.setTextSize(25);
+        info2.setTextColor(Color.RED);
         grid.addView(info1);
 
         for(int i = 0; i < Parametre.LENGTH; i++) {
             ImageView image = new ImageView(this);
             image.setImageDrawable(getDrawable(R.drawable.circle));
             GridLayout.LayoutParams param = new GridLayout.LayoutParams();
-            param.rightMargin = 20;
+            param.rightMargin = 10;
+            param.leftMargin = 10;
             param.width = 125;
             param.height = 125;
             image.setLayoutParams(param);
