@@ -48,5 +48,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        btnHistorique.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Ouvre l'activité HistoriqueActivity
+                Intent intent = new Intent(MainActivity.this, HistoriqueActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
