@@ -1,4 +1,4 @@
-package com.example.myapplication17;
+package com.example.mastermind;
 
 public class Party {
     private int id;
