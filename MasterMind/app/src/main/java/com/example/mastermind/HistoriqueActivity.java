@@ -1,4 +1,4 @@
-package com.example.myapplication17;
+package com.example.mastermind;
 
 import android.content.Intent;
 import android.os.Bundle;
