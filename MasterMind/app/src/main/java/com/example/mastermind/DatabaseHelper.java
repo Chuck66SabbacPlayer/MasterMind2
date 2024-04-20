@@ -1,4 +1,4 @@
-package com.example.myapplication17;
+package com.example.mastermind;
 
 import android.content.ContentValues;
 import android.content.Context;
